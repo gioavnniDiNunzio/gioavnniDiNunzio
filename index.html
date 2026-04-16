@@ -1,9 +1,373 @@
 <!DOCTYPE html>
-<html>
+<html lang="de">
 <head>
-    <title>Meine Seite</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Meine Homepage</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+ 
+    :root {
+      --bg: #0d0d0d;
+      --surface: #161616;
+      --border: #2a2a2a;
+      --accent: #c9a96e;
+      --accent-dim: rgba(201,169,110,0.12);
+      --text: #e8e4dc;
+      --muted: #7a7468;
+      --card-h: 90px;
+      --card-expand: 280px;
+    }
+ 
+    html { scroll-behavior: smooth; }
+ 
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 80px 24px 80px;
+      overflow-x: hidden;
+    }
+ 
+    /* subtle grain overlay */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: .35;
+    }
+ 
+    .wrapper {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 760px;
+    }
+ 
+    /* ── HERO ── */
+    .hero {
+      text-align: left;
+      margin-bottom: 72px;
+      animation: fadeUp .9s ease both;
+    }
+ 
+    .hero .eyebrow {
+      font-family: 'DM Sans', sans-serif;
+      font-size: .75rem;
+      font-weight: 500;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 20px;
+    }
+ 
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.4rem, 6vw, 4rem);
+      font-weight: 700;
+      line-height: 1.1;
+      color: var(--text);
+      margin-bottom: 24px;
+    }
+ 
+    .hero h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+ 
+    .hero p {
+      font-size: 1.05rem;
+      font-weight: 300;
+      line-height: 1.8;
+      color: var(--muted);
+      max-width: 520px;
+    }
+ 
+    .divider {
+      width: 48px;
+      height: 2px;
+      background: var(--accent);
+      margin: 40px 0;
+      opacity: .6;
+    }
+ 
+    /* ── CARDS ── */
+    .cards {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+ 
+    .card {
+      height: var(--card-h);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      cursor: pointer;
+      transition: height .45s cubic-bezier(.4,0,.2,1),
+                  border-color .3s ease,
+                  background .3s ease;
+      animation: fadeUp .8s ease both;
+    }
+    .card:nth-child(1) { animation-delay: .15s; border-radius: 8px 8px 2px 2px; }
+    .card:nth-child(2) { animation-delay: .25s; border-radius: 2px; }
+    .card:nth-child(3) { animation-delay: .35s; border-radius: 2px; }
+    .card:nth-child(4) { animation-delay: .45s; border-radius: 2px 2px 8px 8px; }
+ 
+    .card:hover {
+      height: var(--card-expand);
+      border-color: var(--accent);
+      background: #1a1914;
+    }
+ 
+    .card-inner {
+      padding: 0 32px;
+    }
+ 
+    .card-header {
+      height: var(--card-h);
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+ 
+    .card-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 6px;
+      background: var(--accent-dim);
+      border: 1px solid rgba(201,169,110,.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background .3s;
+    }
+    .card:hover .card-icon {
+      background: rgba(201,169,110,.22);
+    }
+    .card-icon svg {
+      width: 18px; height: 18px;
+      stroke: var(--accent);
+      fill: none;
+      stroke-width: 1.6;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+ 
+    .card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      font-weight: 400;
+      color: var(--text);
+      flex: 1;
+    }
+ 
+    .card-arrow {
+      width: 20px; height: 20px;
+      stroke: var(--muted);
+      fill: none;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: transform .4s cubic-bezier(.4,0,.2,1), stroke .3s;
+      flex-shrink: 0;
+    }
+    .card:hover .card-arrow {
+      transform: rotate(90deg);
+      stroke: var(--accent);
+    }
+ 
+    .card-body {
+      padding: 4px 0 28px;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity .3s ease .15s, transform .35s ease .1s;
+    }
+    .card:hover .card-body {
+      opacity: 1;
+      transform: translateY(0);
+    }
+ 
+    .card-body p {
+      font-size: .95rem;
+      font-weight: 300;
+      line-height: 1.8;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+ 
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+ 
+    .tag {
+      font-size: .72rem;
+      font-weight: 500;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-dim);
+      border: 1px solid rgba(201,169,110,.2);
+      padding: 5px 12px;
+      border-radius: 3px;
+    }
+ 
+    /* ── FOOTER ── */
+    .footer {
+      margin-top: 80px;
+      text-align: center;
+      font-size: .78rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: #3a3830;
+      animation: fadeUp 1s ease .5s both;
+    }
+ 
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
 </head>
 <body>
-    <h1>Hello There</h1>
+  <div class="wrapper">
+ 
+    <!-- HERO -->
+    <header class="hero">
+      <p class="eyebrow">Willkommen</p>
+      <h1>Hallo, ich bin<br/><em>Dein Name</em></h1>
+      <div class="divider"></div>
+      <p>
+        Ich bin ein leidenschaftlicher Entwickler, Designer und Problemlöser —
+        immer auf der Suche nach eleganten Lösungen für komplexe Herausforderungen.
+        Hier findest du alles über mich, meine Projekte und meine Arbeit.
+      </p>
+    </header>
+ 
+    <!-- CARDS -->
+    <section class="cards" aria-label="Bereiche">
+ 
+      <!-- 1 -->
+      <div class="card">
+        <div class="card-inner">
+          <div class="card-header">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24"><path d="M20 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+            </div>
+            <span class="card-title">Über mich</span>
+            <svg class="card-arrow" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+          <div class="card-body">
+            <p>
+              Aufgewachsen mit einer Neugier für Technologie und Gestaltung.
+              Ich glaube daran, dass gutes Design nicht nur schön aussieht,
+              sondern echte Probleme löst. In meiner Freizeit experimentiere
+              ich mit neuen Frameworks, lese über Systemdesign und genieße
+              guten Kaffee.
+            </p>
+            <div class="tag-list">
+              <span class="tag">Zürich</span>
+              <span class="tag">Kreativ</span>
+              <span class="tag">Neugierig</span>
+            </div>
+          </div>
+        </div>
+      </div>
+ 
+      <!-- 2 -->
+      <div class="card">
+        <div class="card-inner">
+          <div class="card-header">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+            </div>
+            <span class="card-title">Fähigkeiten</span>
+            <svg class="card-arrow" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+          <div class="card-body">
+            <p>
+              Von Frontend bis Backend — ich arbeite full-stack und bringe
+              Ideen vom Konzept zur fertigen Anwendung. Ich lege großen Wert
+              auf sauberen Code, Performance und eine intuitive User Experience.
+            </p>
+            <div class="tag-list">
+              <span class="tag">HTML / CSS</span>
+              <span class="tag">JavaScript</span>
+              <span class="tag">React</span>
+              <span class="tag">Node.js</span>
+              <span class="tag">UI Design</span>
+            </div>
+          </div>
+        </div>
+      </div>
+ 
+      <!-- 3 -->
+      <div class="card">
+        <div class="card-inner">
+          <div class="card-header">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            </div>
+            <span class="card-title">Projekte</span>
+            <svg class="card-arrow" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+          <div class="card-body">
+            <p>
+              Ich habe an verschiedenen Web-Apps, Open-Source-Tools und
+              Design-Experimenten gearbeitet. Jedes Projekt war eine Chance,
+              neue Technologien zu lernen und kreative Lösungen zu entwickeln.
+              Schau dir meine Arbeiten auf GitHub an.
+            </p>
+            <div class="tag-list">
+              <span class="tag">Web Apps</span>
+              <span class="tag">Open Source</span>
+              <span class="tag">GitHub</span>
+            </div>
+          </div>
+        </div>
+      </div>
+ 
+      <!-- 4 -->
+      <div class="card">
+        <div class="card-inner">
+          <div class="card-header">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
+            <span class="card-title">Kontakt</span>
+            <svg class="card-arrow" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+          <div class="card-body">
+            <p>
+              Du hast ein spannendes Projekt oder möchtest einfach Hallo sagen?
+              Ich freue mich über jede Nachricht. Schreib mir eine E-Mail oder
+              verbinde dich mit mir auf LinkedIn — ich melde mich so schnell
+              wie möglich zurück.
+            </p>
+            <div class="tag-list">
+              <span class="tag">hallo@deinname.ch</span>
+              <span class="tag">LinkedIn</span>
+              <span class="tag">Twitter / X</span>
+            </div>
+          </div>
+        </div>
+      </div>
+ 
+    </section>
+ 
+    <footer class="footer">
+      &copy; 2026 &nbsp;·&nbsp; Dein Name &nbsp;·&nbsp; Alle Rechte vorbehalten
+    </footer>
+  </div>
 </body>
 </html>
